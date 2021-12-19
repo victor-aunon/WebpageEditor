@@ -1,0 +1,23 @@
+Para poder aceptar un archivo de configuracion en un proyecto node por módulos: config.js ESM
+
+- añadir archivo .sequelicerc:
+     -> añadir require("babel-register"); al inicio
+     -> cambiar la ruta del archivo config de json a js
+
+- Modificar el archivo config-helper.js de sequelize:
+    -> l 33 : cambiar config = require(api.getConfigFile())
+        por config = import('file://' + api.getConfigFile());
+    -> l 49 : cambiar api.rawConfig = config;
+        por api.rawConfig = config.config;
+        o config.default según estemos exportanto la configuracion en el config.js
+
+Comandos:
+    https://sequelize.org/master/manual/migrations.html
+
+    - npx sequelize-cli init
+    - npx sequelize-cli model:generate --atributes ...
+    - npx sequelize-cli db:migrate
+
+Otra opción:
+    Definir los modelos como en el curso de javascript (ESM) y, en lugar de usar db.authenticate, usar db.sync
+    De esta forma se crean las tablas y los cambios en el modelo, aunque perdemos los estados de migración

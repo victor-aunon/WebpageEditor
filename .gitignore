@@ -1,0 +1,8 @@
+# Folders
+.history
+node_modules
+
+# Files
+.env
+webpage_editor.db
+registerUser.js
