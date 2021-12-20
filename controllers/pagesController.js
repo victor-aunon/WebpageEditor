@@ -1,7 +1,15 @@
 const homePage = (req, res) => {
     res.render('home', {
-        page: 'Login',
+        page: 'Home',
+        name: req.user.name || '',
     });
 };
 
-export { homePage };
+const loginPage = (req, res) => {
+    res.render('login', {
+        page: 'Login',
+        // messages: req.messages,
+    });
+};
+
+export { homePage, loginPage };

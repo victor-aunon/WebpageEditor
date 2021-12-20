@@ -1,0 +1,18 @@
+extends ./layout/index
+
+block content 
+    main.container 
+
+        .login-form 
+            h1 Iniciar sesión
+            if (messages.error)
+                p.alert #{messages.error}
+            form(action="/login", method="POST") 
+                .form-element 
+                    label(for="username") Usuario 
+                    input#username(type="text", name="username", placeholder="Nombre de usuario")
+                .form-element 
+                    label(for="password") Contraseña
+                    input#password(type="password", name="password", placeholder="Contraseña")
+                .form-element 
+                    input(type="submit", value="Entrar")
