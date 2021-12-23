@@ -8,6 +8,7 @@ import serverConfig from './config/server.js';
 import router from './routes/index.js';
 import { initializePassport } from './config/passport.js';
 import User from './models/User.js';
+import Project from './models/Project.js';
 
 // The callbacks are the "getUserByName" and "getUserById" functions called in initializePassport in passport.js
 initializePassport(
@@ -19,9 +20,11 @@ initializePassport(
 const app = express();
 
 // Connect with the database
-db.authenticate()
+// db.authenticate()
+db.sync({ force: false, alter: false })
     .then(() => console.log('Database connection successful'))
     .catch(error => console.error(error));
+
 
 // Enable PUG
 app.set('view engine', 'pug');
@@ -35,6 +38,10 @@ app.use(
         secret: serverConfig.secret,
         resave: false,
         saveUninitialized: false,
+        cookie: {
+            expires: Date.now() + 1000*3600*24*7,
+            maxAge: 1000*3600*24*7 // One week
+        }
     })
 );
 

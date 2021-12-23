@@ -1,12 +1,14 @@
 import express from 'express'
 import passport from 'passport';
 
-import { homePage, loginPage } from '../controllers/pagesController.js';
+import { getHomePage, postHomePage, loginPage } from '../controllers/pagesController.js';
 
 const router = express.Router()
 
 // Defining routes
-router.get('/', checkAuthentication, homePage)
+router.get('/', checkAuthentication, getHomePage)
+
+router.post('/', checkAuthentication, postHomePage)
 
 router.get('/login', checkNotAuthentication, loginPage)
 

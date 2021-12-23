@@ -1,0 +1,21 @@
+section.container
+    h2 Crear un proyecto
+    form.project-create-form(action="/", method="post")
+        .form-element
+            label(for="project-name") Nombre
+            input#project-name(type="text" , name="project-name", placeholder="Nombre del proyecto" required)
+        .form-element
+            label(for="project-slug") Slug
+            input#project-slug(type="text" , name="project-slug", placeholder="Slug del proyecto" required)
+        .form-element
+            label(for="project-path") Ruta relativa
+            input#project-path(type="text" , name="project-path", placeholder="Ruta del proyecto" required)
+        .form-element
+            input(type="submit", value="Crear")
+    hr
+    if errors
+        each error in errors
+            - var so = "<strong>";
+            - var sc = "</strong>";
+            p.alert !{so}#{error.message}!{sc}. #{error.value} ya existe
+

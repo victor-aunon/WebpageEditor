@@ -5,7 +5,7 @@ const LocalStrategy = passportLocal.Strategy;
 
 function initializePassport(passport, getUserByName, getUserById) {
     const authenticateUser = async (username, password, done) => {
-        const user = await getUserByName(username);
+        const user = await getUserByName(username); // req.body.username
 
         if (user === null) {
             return done(null, false, {
@@ -15,7 +15,7 @@ function initializePassport(passport, getUserByName, getUserById) {
 
         try {
             crypto.pbkdf2(
-                password,
+                password, // req.body.password
                 user.salt,
                 100,
                 64,

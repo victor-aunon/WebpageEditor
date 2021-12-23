@@ -1,4 +1,9 @@
 extends ./layout/index
 
 block content 
-    h1 Esto es el home
+    if user.admin 
+        include ./layout/project_create
+
+    section.container
+        h2 Selecciona un proyecto
+        optgroup 
