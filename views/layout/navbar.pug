@@ -1,0 +1,7 @@
+nav.navbar 
+    h1.webname Linck Webpage Editor
+    if user
+        div.navbar-links
+            p Hola, #{user.name}
+            a(href="/logout") 
+                button.logout Cerrar sesión
