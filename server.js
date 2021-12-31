@@ -1,14 +1,16 @@
-import express, { urlencoded } from 'express';
+import express from 'express';
 import passport from 'passport';
 import flash from 'express-flash';
 import session from 'express-session';
 
+// Configs
 import db from './config/db.js';
 import serverConfig from './config/server.js';
 import router from './routes/index.js';
 import { initializePassport } from './config/passport.js';
+
+// Models
 import User from './models/User.js';
-import Project from './models/Project.js';
 
 // The callbacks are the "getUserByName" and "getUserById" functions called in initializePassport in passport.js
 initializePassport(

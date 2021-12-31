@@ -1,6 +1,7 @@
 # Folders
 .history
 node_modules
+tocados
 
 # Files
 .env

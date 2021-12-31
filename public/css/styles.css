@@ -3,6 +3,8 @@
     --white: #FFFFFF;
     --black: #000000;
     --highlight-color: #2b5797;
+    --medium-color: #4db8ff;
+    --light-color: #b3e0ff;
     --alert-color: lightcoral;
     --button-color: springgreen;
     --button-hover-color: green;
@@ -17,13 +19,20 @@ html {
     box-sizing: inherit;
 }
 
+hr {
+    margin-bottom: 2rem;
+    color: var(--highlight-color);
+}
+
+h2 {
+    color: var(--highlight-color);
+}
+
 .container {
     width: 90%;
     /* max-width: 1200px; */
     margin: 0 auto;
-    text-align: center;
 }
-
 
 /* ============ NAVIGATION BAR ============ */
 .navbar {
@@ -101,6 +110,7 @@ html {
     background-color: var(--alert-color);
     padding: 0.5rem;
     border-radius: 5px;
+    text-align: center;
 }
 
 .login-form {
@@ -124,26 +134,26 @@ html {
     font-weight: 600;
 }
 
-.form-element input {
+input[type="submit"] {
+    background-color: var(--light-color);
+    font-size: 1.2rem;
+    font-weight: 600;
     height: 2rem;
-    border-radius: 5px;
     border: 1px solid grey;
-    padding: 0 0.5rem
+    border-radius: 5px;
+    padding: 0 0.5rem;
+    transition: all 0.1s linear;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--highlight-color);
+    color: var(--white);
+    cursor: pointer;
 }
 
 .form-element input[type="submit"] {
     margin-top: 1.5rem;
-    font-size: 1.2rem;
-    font-weight: 600;
     height: 2.5rem;
-    background-color: var(--button-color);
-    transition: all 0.1s linear;
-}
-
-.form-element input[type="submit"]:hover {
-    background-color: var(--button-hover-color);
-    color: var(--white);
-    cursor: pointer;
 }
 /* ============ ENF OF LOGIN FORM ============ */
 
@@ -180,3 +190,113 @@ html {
     }
 }
 /* ============ END OF PROJECT CREATE FORM ============ */
+
+/* ============ PROJECT SELECT FORM ============ */
+.select-project-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.project-list {
+    height: 2rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 0 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.project-select-submit {
+    width: 60%;
+    margin: 0 auto;
+}
+
+@media screen and (min-width:768px) {
+    .select-project-form {
+        flex-direction: row;
+    }
+    .project-list {
+        flex: 1 1 50%;
+        margin-right: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    .project-select-submit {
+        flex: 0 1;
+    }
+}
+/* ============ END OF PROJECT SELECT FORM ============ */
+
+/* ============ PAGES TABS CONTAINER ============ */
+.tab {
+    overflow: hidden;
+    border: 1px solid var(--highlight-color);
+    background-color: var(--light-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0.75rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.tab button:hover {
+    background-color: var(--medium-color);
+}
+
+.tab button.active {
+    color: var(--white);
+    background-color: var(--highlight-color);
+}
+
+.tabcontent {
+    display: none;
+    padding: 1rem;
+    border: 1px solid var(--highlight-color);
+    border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tabcontent h2 {
+    margin: 0;
+}
+
+.elements-table {
+    width: 100%;
+    text-align: left;
+    margin: 0.5rem 0 2rem 0;
+    border-collapse: collapse;
+}
+
+.elements-table th {
+    width: 23%;
+    background-color: var(--white);
+}
+
+.elements-table th:last-of-type {
+    width: 8%;
+}
+
+.elements-table tr:nth-child(1) {
+    border-bottom: 1px solid var(--medium-color);
+}
+
+.elements-table tr:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+
+.elements-table td {
+    padding: 0.5rem 0.5rem 0.5rem 0;
+}
+/* ============ END OF PAGES TABS CONTAINER ============ */
+
+

@@ -1,9 +1,41 @@
 extends ./layout/index
+include ./layout/mixins
 
 block content 
     if user.admin 
         include ./layout/project_create
 
-    section.container
-        h2 Selecciona un proyecto
-        optgroup 
+    include ./layout/errors
+    include ./layout/project_select
+
+    if projectElements 
+        section.container
+            .tab(onload='openDefaultTab()')
+                for page in projectElements
+                    button(class="tablinks" onclick=`openTab(event, '${page.name}')`) #{page.name}
+            
+            for page in projectElements
+                div(id=`${page.name}-content` class="tabcontent")
+                    .title-container
+                        h2 Título
+                        +tableElements([page.elements.title[0]])
+                    .metas-container
+                        h2 Metatags 
+                        +tableElements(page.elements.meta)
+                    if page.elements.p
+                        .texts-container
+                            h2 Textos 
+                            +tableElements(page.elements.p)
+                    if page.elements.img
+                        .images-container
+                            h2 Imágenes 
+                            +tableElements(page.elements.img)
+                    if page.elements.video
+                        .videos-container
+                            h2 Vídeos 
+                            +tableElements(page.elements.video)
+                    
+                        
+                            
+    script.
+        openDefaultTab()
