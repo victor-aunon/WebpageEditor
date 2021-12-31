@@ -1,0 +1,11 @@
+section.container
+    h2 Selecciona un proyecto
+    form.select-project-form(action="/select-project", method="post")
+        input.project-list(list="projects" name="project" id="project-input" placeholder="Pincha aquí o comienza a escribir para filtrar los resultados" autocomplete="off")
+        datalist#projects
+            if projects
+                for project in projects 
+                    option(value= project.name)
+        input.project-select-submit(type="submit", value="Listar elementos")
+    br
+    hr
