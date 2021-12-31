@@ -6,7 +6,7 @@ import {
     postHomePage,
     loginPage,
     retrieveProjectElements,
-    // getProjectPage
+    getProjectPage
 } from '../controllers/pagesController.js';
 
 const router = express.Router();
@@ -21,7 +21,7 @@ router.get('/login', checkNotAuthentication, loginPage);
 router.post('/select-project', checkAuthentication, retrieveProjectElements, getHomePage);
 
 // Specific page of the project
-// router.get('/projects/:slug/:page', checkAuthentication, getProjectPage);
+router.get('/projects/:slug/:page', checkAuthentication, getProjectPage);
 
 router.post(
     '/login',

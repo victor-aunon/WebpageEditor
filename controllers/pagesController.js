@@ -71,7 +71,7 @@ const retrieveProjectElements = async (req, res, next) => {
     const currentUser = await req.user;
 
     try {
-        const pages = getPages(`${path.resolve()}/projects/${project.name}`);
+        const pages = getPages(`${path.resolve()}/projects/${project.slug}`);
         const projectElements = [];
 
         if (pages.length > 0) {
@@ -87,9 +87,11 @@ const retrieveProjectElements = async (req, res, next) => {
                     await Page.create({
                         name: pageFile.split('.')[0],
                         file: pageFile,
-                        path: `${path.resolve()}/projects/${project.name}/${pageFile}`,
-                        projectId: project.id
-                    })
+                        path: `${path.resolve()}/projects/${
+                            project.slug
+                        }/${pageFile}`,
+                        projectId: project.id,
+                    });
 
                     pageDB = await Page.findOne({
                         where: {
@@ -111,21 +113,48 @@ const retrieveProjectElements = async (req, res, next) => {
                 });
             }
         }
-        console.log(projectElements)
+        console.log(projectElements);
         req.elements = projectElements;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error.errors) {
-            req.errors = [
-                { message: error.errors[0].message },
-            ];
+            req.errors = [{ message: error.errors[0].message }];
         } else {
             req.errors = [
                 { message: 'No existen páginas para este proyecto.' },
             ];
         }
     }
+    // Using next because this function add properties to the request,
+    // does not respond anything
     return next();
 };
 
-export { getHomePage, postHomePage, loginPage, retrieveProjectElements };
+const getProjectPage = async (req, res) => {
+    const project = await Project.findOne({
+        where: { slug: req.params.slug },
+    });
+
+    let page = undefined
+    if (project) {
+        page = await Page.findOne({
+            where: { name: req.params.page,
+                projectId: project.id
+             },
+        });
+    }
+
+    if (project != undefined & page != undefined) {
+        res.sendFile(`${page.path}`)
+    } else {
+        res.sendStatus(404);
+    }
+};
+
+export {
+    getHomePage,
+    postHomePage,
+    loginPage,
+    retrieveProjectElements,
+    getProjectPage,
+};
