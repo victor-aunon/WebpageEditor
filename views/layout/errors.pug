@@ -1,0 +1,6 @@
+if errors
+    section.container
+        each error in errors
+            - var so = "<strong>";
+            - var sc = "</strong>";
+            p.alert !{so}#{error.message}!{sc}. #{error.value}

@@ -13,9 +13,3 @@ section.container
         .form-element
             input(type="submit", value="Crear")
     hr
-    if errors
-        each error in errors
-            - var so = "<strong>";
-            - var sc = "</strong>";
-            p.alert !{so}#{error.message}!{sc}. #{error.value} ya existe
-
