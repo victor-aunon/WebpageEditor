@@ -1,17 +1,32 @@
 import slugify from 'slugify';
 import path from 'path';
+import express from 'express';
 
 // Models
 import Project from '../models/Project.js';
 import Page from '../models/Page.js';
 
+import { app } from '../server.js';
+
 // Functions
 import { getPages, getElementsFromPage } from '../utils/readProjectPages.js';
-import { getElementsProps } from '../utils/manageProjectElements.js';
+import {
+    getElementsProps,
+    ELEMENT_TYPES,
+} from '../utils/viewProjectElements.js';
+
+import { saveElementToDB } from '../utils/saveElement.js'
+
+let projectId = null;
 
 const getHomePage = async (req, res) => {
     const user = await req.user;
     const projects = await Project.findAll();
+
+    let page = undefined;
+    if (req.query.pageId) {
+        page = await Page.findByPk(Number(req.query.pageId))
+    }
 
     res.render('home', {
         page: 'Home',
@@ -20,8 +35,10 @@ const getHomePage = async (req, res) => {
             admin: user.role === 'ADMIN' ? true : false,
         },
         projects: projects,
+        project: req.project,
         errors: req.errors,
         projectElements: req.elements,
+        pageName: page != undefined ? page.name : undefined
     });
 };
 
@@ -65,14 +82,20 @@ const loginPage = (req, res) => {
 };
 
 const retrieveProjectElements = async (req, res, next) => {
+
+    if (req.body.project) projectId = req.body.project;
     const project = await Project.findOne({
-        where: { name: req.body.project },
+        where: { name: projectId },
     });
     const currentUser = await req.user;
 
     try {
         const pages = getPages(`${path.resolve()}/projects/${project.slug}`);
         const projectElements = [];
+
+        // Enable the css and js folders of the project to serve static files
+        app.use(express.static(`projects/${project.slug}/css`));
+        app.use(express.static(`projects/${project.slug}/js`));
 
         if (pages.length > 0) {
             for (const pageFile of pages) {
@@ -113,8 +136,8 @@ const retrieveProjectElements = async (req, res, next) => {
                 });
             }
         }
-        console.log(projectElements);
         req.elements = projectElements;
+        req.project = project;
     } catch (error) {
         console.log(error);
         if (error.errors) {
@@ -135,21 +158,43 @@ const getProjectPage = async (req, res) => {
         where: { slug: req.params.slug },
     });
 
-    let page = undefined
+    let page = undefined;
     if (project) {
         page = await Page.findOne({
-            where: { name: req.params.page,
-                projectId: project.id
-             },
+            where: { name: req.params.page, projectId: project.id },
         });
     }
 
-    if (project != undefined & page != undefined) {
-        res.sendFile(`${page.path}`)
+    if ((project != undefined) & (page != undefined)) {
+        res.sendFile(`${page.path}`);
     } else {
         res.sendStatus(404);
     }
 };
+
+const getElementForm = async (req, res) => {
+    const { id, elementType } = req.params;
+
+    const element = await ELEMENT_TYPES[
+        Object.keys(ELEMENT_TYPES).filter(
+            el => ELEMENT_TYPES[el].name === elementType
+        )
+    ].model.findByPk(id);
+
+    if (element) {
+        res.render('element_form', { element, type: elementType });
+    } else {
+        res.sendStatus(404);
+    }
+};
+
+const saveElement = async (req, res) => {
+    console.log(req.params)
+    console.log(req.params.elementType)
+    req.messages = await saveElementToDB(req)
+    if(req.files) console.log(req.files)
+    res.redirect('/select-project')
+}
 
 export {
     getHomePage,
@@ -157,4 +202,6 @@ export {
     loginPage,
     retrieveProjectElements,
     getProjectPage,
+    getElementForm,
+    saveElement,
 };

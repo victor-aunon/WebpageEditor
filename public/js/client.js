@@ -24,10 +24,28 @@ function openTab(event, tab) {
     event.currentTarget.classList.add('active');
 }
 
-function openDefaultTab() {
-    const defaultTab = document.querySelectorAll('.tablinks')[0];
-
+function openDefaultTab( defaultTab ) {
+    let defTab;
     if (defaultTab) {
-        defaultTab.click();
+        defTab = document.querySelector(`#${defaultTab}-button`);
+    } else {
+        defTab = document.querySelectorAll('.tablinks')[0];
     }
+
+    if (defTab) {
+        defTab.click();
+    }
+}
+
+function checkboxDefaultChecked() {
+    const options = [
+        document.querySelector('#element-autoplay'),
+        document.querySelector('#element-controls'),
+        document.querySelector('#element-loop'),
+        document.querySelector('#element-muted')
+    ]
+
+    options.forEach(option => {
+        if (option.dataset.value === 'true') option.checked = true;
+    });
 }

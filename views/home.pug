@@ -1,41 +1,46 @@
 extends ./layout/index
 include ./layout/mixins
 
-block content 
-    if user.admin 
+block content
+    if user.admin
         include ./layout/project_create
 
     include ./layout/errors
     include ./layout/project_select
 
-    if projectElements 
+    if projectElements
         section.container
-            .tab(onload='openDefaultTab()')
+            .tab
                 for page in projectElements
-                    button(class="tablinks" onclick=`openTab(event, '${page.name}')`) #{page.name}
-            
+                    button(id=`${page.name}-button` class="tablinks" onclick=`openTab(event, '${page.name}')`) #{page.name}
+
             for page in projectElements
                 div(id=`${page.name}-content` class="tabcontent")
+                    .view-page-container 
+                        a.view-page-button(href=`/projects/${project.slug}/${page.name}` target="_blank") 
+                            button
+                                | Ver página
                     .title-container
                         h2 Título
                         +tableElements([page.elements.title[0]])
                     .metas-container
-                        h2 Metatags 
+                        h2 Metatags
                         +tableElements(page.elements.meta)
                     if page.elements.p
                         .texts-container
-                            h2 Textos 
+                            h2 Textos
                             +tableElements(page.elements.p)
                     if page.elements.img
                         .images-container
-                            h2 Imágenes 
+                            h2 Imágenes
                             +tableElements(page.elements.img)
                     if page.elements.video
                         .videos-container
-                            h2 Vídeos 
+                            h2 Vídeos
                             +tableElements(page.elements.video)
-                    
-                        
-                            
+
+
+
     script.
-        openDefaultTab()
+        var pageName = '#{pageName}'
+        openDefaultTab(pageName)

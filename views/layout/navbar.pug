@@ -5,3 +5,7 @@ nav.navbar
             p Hola, #{user.name}
             a(href="/logout") 
                 button.logout Cerrar sesión
+    else if element
+        .navbar-links 
+            a(href=`/select-project?pageId=${element.pageId}`)
+                | Ir atrás

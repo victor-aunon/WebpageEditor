@@ -5,8 +5,12 @@ import Text from '../models/Text.js';
 import Image from '../models/Image.js';
 import Video from '../models/Video.js';
 
-const ELEMENTTYPES = {
-    title: 'title', meta: 'metatag', p: 'text', img: 'image', video: 'video'
+const ELEMENT_TYPES = {
+    title: { name: 'title', model: Metatag },
+    meta: { name: 'metatag', model: Metatag },
+    p: { name: 'text', model: Text },
+    img: { name: 'image', model: Image },
+    video: { name: 'video', model: Video },
 };
 
 async function getElementPropsByType(currentUserId, pageId, elements, type) {
@@ -22,7 +26,7 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
                     Metatag,
                     selectedElements[0],
                     'title',
-                    ELEMENTTYPES[type]
+                    ELEMENT_TYPES[type].name
                 )
             );
             return selectedProps;
@@ -42,7 +46,7 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
                         Metatag,
                         meta,
                         meta.attribs.name,
-                        ELEMENTTYPES[type]
+                        ELEMENT_TYPES[type].name
                     )
                 );
             }
@@ -57,7 +61,7 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
                         Text,
                         p,
                         p.attribs.id,
-                        ELEMENTTYPES[type]
+                        ELEMENT_TYPES[type].name
                     )
                 );
             }
@@ -72,7 +76,7 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
                         Image,
                         img,
                         img.attribs.id,
-                        ELEMENTTYPES[type]
+                        ELEMENT_TYPES[type].name
                     )
                 );
             }
@@ -87,7 +91,7 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
                         Video,
                         vid,
                         vid.attribs.id,
-                        ELEMENTTYPES[type]
+                        ELEMENT_TYPES[type].name
                     )
                 );
             }
@@ -101,7 +105,7 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
 async function getElementsProps(currentUserId, pageId, elements) {
     const allProps = {};
 
-    for (const type of Object.keys(ELEMENTTYPES)) {
+    for (const type of Object.keys(ELEMENT_TYPES)) {
         allProps[type] = await getElementPropsByType(
             currentUserId,
             pageId,
@@ -128,7 +132,6 @@ const elementEditionProps = async (
     elementName,
     type
 ) => {
-    console.log(type)
     const elementDB =
         pageId === undefined
             ? null
@@ -221,4 +224,4 @@ async function addElementToDB(element, editorId, pageId) {
     }
 }
 
-export { getElementsProps };
+export { getElementsProps, ELEMENT_TYPES };

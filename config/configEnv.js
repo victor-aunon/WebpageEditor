@@ -13,6 +13,7 @@ export const config = {
         host: null,
         port: null,
         dialect: 'sqlite',
+        logging: false,
         storage: path.join(path.resolve(), 'webpage_editor.db'),
     },
     production: {
@@ -22,6 +23,7 @@ export const config = {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: 'mysql',
+        logging: false,
         storage: null,
     },
 };

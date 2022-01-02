@@ -264,6 +264,31 @@ input[type="submit"]:hover {
     border-top: none;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.view-page-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.view-page-button button {
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    border: 1px solid var(--highlight-color);
+    background-color: var(--light-color);
+}
+
+.view-page-button button:hover {
+    color: var(--white);
+    background-color: var(--highlight-color);
 }
 
 .tabcontent h2 {

@@ -19,6 +19,7 @@ const db = new Sequelize(
         host: config[env].host,
         port: config[env].port,
         dialect: config[env].dialect,
+        logging: config[env].logging,
         storage: config[env].storage,
         define: {
             timestamps: false,

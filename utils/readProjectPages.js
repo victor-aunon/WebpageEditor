@@ -1,12 +1,12 @@
-import fs from 'fs';
+import { readdirSync, readFileSync } from 'fs';
 import * as cheerio from 'cheerio';
 
 function getPages(projectPath) {
-    return fs.readdirSync(projectPath);
+    return readdirSync(projectPath).filter(file => file.includes('.html'));
 }
 
 function getPageContent(page) {
-    return fs.readFileSync(page, 'utf8');
+    return readFileSync(page, 'utf8');
 }
 
 function getElementsFromPage(page) {

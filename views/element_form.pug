@@ -1,0 +1,72 @@
+extends ./layout/index
+
+block content
+    include ./layout/errors
+    section.container 
+
+        form.edit-element(action=`/element/${type}/${element.id}`, method="POST" enctype="multipart/form-data")
+            case type 
+                when 'title'
+                    h2 Editar título 
+                when 'metatag'
+                    h2 Editar metatag 
+                when 'text'
+                    h2 Editar texto
+                when 'image'
+                    h2 Editar imagen
+                when 'video'
+                    h2 Editar video
+            .form-element
+                if type == 'title'
+                    label(for="element-value") Nombre
+                    input#element-value(type="text" , name="element-value", required value=`${element.value}`)
+                else
+                    label(for="element-name") Nombre
+                    input#element-name(type="text" , name="element-name", required value=`${element.name}`)
+                if type == 'metatag'
+                    label(for="element-value") Valor
+                    input#element-value(type="text" , name="element-value", required value=`${element.value}`)
+                if type == 'text'
+                    label(for="element-content") Contenido
+                    input#element-content(type="text" , name="element-content", required value=`${element.content}`)
+                if type == 'image' | type == 'video'
+                    label(for="element-upload") Subir archivo
+                    if type == 'image'
+                        input#element-upload(type="file", name="element-upload" accept="image/*" value=`${element.source}`)
+                    if type == 'video'
+                        input#element-upload(type="file", name="element-upload" accept="video/*" value=`${element.source}`)
+                    p.note Recuerda renombrar los archivos antes de subirlos con un nombre identificativo y fácil
+            if type == 'image'
+                .form-element
+                    label(for="element-alt") Texto alternativo (SEO)
+                    input#element-alt(type="text" , name="element-alt", required value=`${element.alt}`)
+            if type == 'image' | type == 'video'
+                .form-element
+                    label(for="element-width") Ancho en píxeles (opcional)
+                    input#element-width(type="number", name="element-width" min="0")
+                    label(for="element-height") Alto en píxeles (opcional)
+                    input#element-height(type="number", name="element-height" min="0")
+            if type == 'video'
+                .form-element.video-options
+                    h3 Opciones de vídeo
+                    label(for="element-autoplay") Reproducir automáticamente
+                    input#element-autoplay(type="checkbox", name="element-autoplay" data-value=`${element.autoplay}`) 
+                    label(for="element-controls") Mostrar controles de reproducción
+                    input#element-controls(type="checkbox", name="element-controls" data-value=`${element.controls}`)
+                    label(for="element-loop") Reproducir en bucle
+                    input#element-loop(type="checkbox", name="element-loop" data-value=`${element.loop}`) 
+                    label(for="element-muted") Reproducir sin audio
+                    input#element-muted(type="checkbox", name="element-muted" data-value=`${element.muted}`)
+                script.
+                    checkboxDefaultChecked()
+            .form-element
+                input#page-id(type="hidden", name="page-id" value=`${element.pageId}`)
+                input(type="submit", value="Guardar cambios")
+
+            
+ 
+
+
+                    
+                 
+            
