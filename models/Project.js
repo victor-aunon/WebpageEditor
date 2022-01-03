@@ -16,7 +16,7 @@ const Project = db.define(
             allowNull: false,
             unique: true,
         },
-        path: {
+        folder: {
             type: Sequelize.STRING,
             allowNull: false,
         },

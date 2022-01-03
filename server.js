@@ -2,6 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import flash from 'express-flash';
 import session from 'express-session';
+import fileUpload from 'express-fileupload';
 
 // Configs
 import db from './config/db.js';
@@ -27,7 +28,6 @@ db.sync({ force: false, alter: false })
     .then(() => console.log('Database connection successful'))
     .catch(error => console.error(error));
 
-
 // Enable PUG
 app.set('view engine', 'pug');
 
@@ -51,6 +51,16 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Use fileUpload
+app.use(fileUpload({
+    createParentPath: true,
+    safeFileNames: true,
+    useTempFiles : true,
+    tempFileDir : './tmp/',
+    preserveExtension: true,
+    debug: true
+}))
+
 // Add body parser
 app.use(express.urlencoded({ extended: true }));
 
@@ -65,3 +75,5 @@ app.listen(serverConfig.port, serverConfig.host, () => {
     const { port, host } = serverConfig;
     console.log('Server ready and listen on ' + host + ':' + port);
 });
+
+export { app };

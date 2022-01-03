@@ -15,4 +15,4 @@ function getElementsFromPage(page) {
     return $('.editable').toArray()
 }
 
-export { getPages, getElementsFromPage };
+export { getPages, getPageContent, getElementsFromPage };

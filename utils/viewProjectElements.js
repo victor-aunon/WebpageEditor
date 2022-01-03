@@ -117,10 +117,17 @@ async function getElementsProps(currentUserId, pageId, elements) {
 }
 
 const editor = async (currentUserId, model) => {
+    let editor;
+    if (model) {
+        editor = await User.findByPk(model.editorId);
+    } else {
+        editor = await User.findOne({ where: { name: 'Víctor' } });
+    }
+
     return model !== null
-        ? currentUserId === model.editorId
+        ? currentUserId === editor.id
             ? 'Tú'
-            : await User.findByPk(model.editorId).name
+            : editor.name
         : undefined;
 };
 
