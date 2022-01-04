@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import slugify from 'slugify';
 import { writeFileSync } from 'fs';
 import { dirname } from 'path';
 
@@ -57,7 +58,7 @@ const saveTitle = async data => {
             );
             // Get HTML content
             const pageHTML = getPageContent(page.path);
-            const $ = cheerio.load(pageHTML.trim());
+            const $ = cheerio.load(pageHTML);
             // New element to replace the old one
             const titleHTML = `<title class="editable">${newValue}</title>`;
             $('title').replaceWith(titleHTML);
@@ -80,7 +81,7 @@ const saveTitle = async data => {
 const saveMetatag = async data => {
     const metatag = await Metatag.findByPk(data.params.id);
     const page = await Page.findByPk(metatag.pageId);
-    const newName = data.body['element-name'];
+    const newName = slugify(data.body['element-name'], { lower: true });
     const newValue = data.body['element-value'];
 
     let response;
@@ -97,7 +98,7 @@ const saveMetatag = async data => {
             );
             // Get HTML content
             const pageHTML = getPageContent(page.path);
-            const $ = cheerio.load(pageHTML.trim());
+            const $ = cheerio.load(pageHTML);
             // New element to replace the old one
             const metaHTML = `<meta name="${newName}" class="editable" content="${newValue}">`;
             $(`meta[name="${metatag.name}"]`).replaceWith(metaHTML);
@@ -119,7 +120,7 @@ const saveMetatag = async data => {
 const saveText = async data => {
     const text = await Text.findByPk(data.params.id);
     const page = await Page.findByPk(text.pageId);
-    const newName = data.body['element-name'];
+    const newName = slugify(data.body['element-name'], { lower: true });
     const newContent = data.body['element-content'];
 
     let response;
@@ -136,7 +137,7 @@ const saveText = async data => {
             );
             // Get HTML content
             const pageHTML = getPageContent(page.path);
-            const $ = cheerio.load(pageHTML.trim());
+            const $ = cheerio.load(pageHTML);
             // New element to replace the old one
             const currentText = $(`#${text.name}`);
             const textHTML = `<p id="${newName}" class=${currentText.attr(
@@ -161,7 +162,7 @@ const saveText = async data => {
 const saveImage = async data => {
     const image = await Image.findByPk(data.params.id);
     const page = await Page.findByPk(image.pageId);
-    const newName = data.body['element-name'];
+    const newName = slugify(data.body['element-name'], { lower: true });
     const newAlt = data.body['element-alt'];
     const newWidth = Number(data.body['element-width']);
     const newHeight = Number(data.body['element-height']);
@@ -199,7 +200,7 @@ const saveImage = async data => {
             );
             // Get HTML content
             const pageHTML = getPageContent(page.path);
-            const $ = cheerio.load(pageHTML.trim());
+            const $ = cheerio.load(pageHTML);
             // New element to replace the old one
             const currentImage = $(`#${image.name}`);
             const imageHTML = `<img id="${newName}" class=${currentImage.attr(
@@ -223,13 +224,15 @@ const saveImage = async data => {
 const saveVideo = async data => {
     const video = await Video.findByPk(data.params.id);
     const page = await Page.findByPk(video.pageId);
-    const newName = data.body['element-name'];
+    const newName = slugify(data.body['element-name'], { lower: true });
     const newWidth = Number(data.body['element-width']);
     const newHeight = Number(data.body['element-height']);
-    const newAutoplay = Number(data.body['element-autoplay']) || 0;
-    const newControls = Number(data.body['element-controls']) || 0;
-    const newLoop = Number(data.body['element-loop']) || 0;
-    const newMuted = Number(data.body['element-muted']) || 0;
+    const newAutoplay = Boolean(data.body['element-autoplay']) || false;
+    const newControls = Boolean(data.body['element-controls']) || false;
+    const newLoop = Boolean(data.body['element-loop']) || false;
+    const newMuted = Boolean(data.body['element-muted']) || false;
+    console.log(data.body)
+    console.log(video.autoplay)
 
     let response;
     try {
@@ -270,16 +273,16 @@ const saveVideo = async data => {
             );
             // Get HTML content
             const pageHTML = getPageContent(page.path);
-            const $ = cheerio.load(pageHTML.trim());
+            const $ = cheerio.load(pageHTML);
             // New element to replace the old one
             const currentVideo = $(`#${video.name}`);
             const videoHTML = `<video id="${newName}" class=${currentVideo.attr(
                 'class'
             )} src="/video/${source}" width=${newWidth} height=${newHeight} ${
-                newAutoplay === 1 ? 'autoplay' : ''
-            } ${newControls === 1 ? 'controls' : ''} ${
-                newLoop === 1 ? 'loop' : ''
-            } ${newMuted === 1 ? 'muted' : ''}></video>`;
+                newAutoplay === true ? 'autoplay' : ''
+            } ${newControls === true ? 'controls' : ''} ${
+                newLoop === true ? 'loop' : ''
+            } ${newMuted === true ? 'muted' : ''}></video>`;
             $(`#${video.name}`).replaceWith(videoHTML);
             // Write the new HTML to its file
             writeFileSync(page.path, $.html());
