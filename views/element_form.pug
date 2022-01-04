@@ -37,7 +37,9 @@ block content
                             label(for="element-value") Valor
                             input#element-value(type="text" , name="element-value", required value=`${element.value}`)
                         if type == 'image' | type == 'video'
-                            label(for="element-upload") Subir archivo. El actual es: #{element.source}
+                            label(for="element-upload") 
+                                | Subir archivo. El actual es: 
+                                strong #{element.source}
                             if type == 'image'
                                 input#element-upload(type="file", name="element-upload" accept="image/*")
                             if type == 'video'
@@ -75,6 +77,7 @@ block content
                     .form-element
                         label(for="element-muted") Reproducir sin audio
                         input#element-muted(type="checkbox", name="element-muted" data-value=`${element.muted}` value="1")
+                p.note Deseleccionar "Mostrar controles de reproducción" para poder hacer editable el vídeo en ciertos navegadores.
                 script.
                     checkboxDefaultChecked()
             .form-element.form-submit

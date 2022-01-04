@@ -19,7 +19,19 @@ block content
                     .view-page-container 
                         a.view-page-button(href=`/projects/${project.slug}/${page.name}` target="_blank") 
                             button
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <circle cx="12" cy="12" r="2" />
+                                <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" />
+                                </svg>
                                 | Ver página
+                    if messages 
+                        if messages.error 
+                            p.message.alert #{messages.error}
+                        else if messages.success
+                            p.message.success #{messages.success}
+                        else if messages.info 
+                            p.message.info #{messages.info}
                     .title-container
                         h2 Título
                         +tableElements([page.elements.title[0]])
