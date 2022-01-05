@@ -1,4 +1,4 @@
-mixin tableElements(elements)
+mixin tableElements(elements, page)
     table.elements-table
         tr
             th Nombre
@@ -8,9 +8,9 @@ mixin tableElements(elements)
             th 
             th
         for element in elements
-            +rowElement(element)
+            +rowElement(element, page.name)
 
-mixin rowElement(element)
+mixin rowElement(element, pageName)
     tr 
         td #{element.name}
         if element.editions === 0 | element.editions === undefined

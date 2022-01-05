@@ -34,22 +34,22 @@ block content
                             p.message.info #{messages.info}
                     .title-container
                         h2 Título
-                        +tableElements([page.elements.title[0]])
+                        +tableElements([page.elements.title[0]], page)
                     .metas-container
                         h2 Metatags
-                        +tableElements(page.elements.meta)
+                        +tableElements(page.elements.meta, page)
                     if page.elements.p
                         .texts-container
                             h2 Textos
-                            +tableElements(page.elements.p)
+                            +tableElements(page.elements.p, page)
                     if page.elements.img
                         .images-container
                             h2 Imágenes
-                            +tableElements(page.elements.img)
+                            +tableElements(page.elements.img, page)
                     if page.elements.video
                         .videos-container
                             h2 Vídeos
-                            +tableElements(page.elements.video)
+                            +tableElements(page.elements.video, page)
 
 
 
