@@ -1,5 +1,7 @@
-import User from '../models/User.js';
+import * as cheerio from 'cheerio';
 
+// Models
+import User from '../models/User.js';
 import Metatag from '../models/Metatag.js';
 import Text from '../models/Text.js';
 import Image from '../models/Image.js';
@@ -184,7 +186,8 @@ async function addElementToDB(element, editorId, pageId) {
             case 'p':
                 await Text.create({
                     name: element.attribs.id,
-                    content: element.children[0].data,
+                    content: cheerio.load(element)('p').html(),
+                    style: element.attribs.style,
                     editorId,
                     pageId,
                 });

@@ -14,6 +14,10 @@ const Text = db.define(
             type: Sequelize.STRING,
             allowNull: false,
         },
+        style: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
         editions: {
             type: Sequelize.SMALLINT,
             defaultValue: 0,

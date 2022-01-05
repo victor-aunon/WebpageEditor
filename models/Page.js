@@ -9,12 +9,10 @@ const Page = db.define(
         name: {
             type: Sequelize.STRING,
             allowNull: false,
-            unique: true,
         },
         file: {
             type: Sequelize.STRING,
             allowNull: false,
-            unique: true,
         },
         path: {
             type: Sequelize.STRING,

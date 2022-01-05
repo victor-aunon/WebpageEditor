@@ -121,15 +121,17 @@ const saveText = async data => {
     const text = await Text.findByPk(data.params.id);
     const page = await Page.findByPk(text.pageId);
     const newName = slugify(data.body['element-name'], { lower: true });
-    const newContent = data.body['element-content'];
+    // CKEditor returns a paragraph, I need the content of this paragraph
+    const newContent = cheerio.load(data.body['element-content'])('p');
 
     let response;
     try {
-        if ((newName !== text.name) | (newContent !== text.content)) {
+        if ((newName !== text.name) | (newContent.html() !== text.content)) {
             await Text.update(
                 {
                     name: newName,
-                    content: newContent,
+                    content: newContent.html(),
+                    style: newContent.attr('style') || null,
                     editorId: data.user.id,
                     editions: text.editions + 1,
                 },
@@ -142,7 +144,11 @@ const saveText = async data => {
             const currentText = $(`#${text.name}`);
             const textHTML = `<p id="${newName}" class=${currentText.attr(
                 'class'
-            )}>${newContent}</p>`;
+            )} ${
+                newContent.attr('style')
+                    ? `style="${newContent.attr('style')}"`
+                    : ''
+            }>${newContent.html()}</p>`;
             $(`#${text.name}`).replaceWith(textHTML);
             // Write the new HTML to its file
             writeFileSync(page.path, $.html());
@@ -231,8 +237,8 @@ const saveVideo = async data => {
     const newControls = Boolean(data.body['element-controls']) || false;
     const newLoop = Boolean(data.body['element-loop']) || false;
     const newMuted = Boolean(data.body['element-muted']) || false;
-    console.log(data.body)
-    console.log(video.autoplay)
+    console.log(data.body);
+    console.log(video.autoplay);
 
     let response;
     try {

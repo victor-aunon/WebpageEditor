@@ -50,6 +50,8 @@ block content
                 .form-element
                     label(for="element-content") Contenido
                     textarea#element-content.text-content(name="element-content", required) #{element.content}
+                    script.
+                        CKEDITOR.replace('element-content')
             if type == 'image'
                 .form-element
                     label(for="element-alt") Texto alternativo (SEO)

@@ -3,6 +3,10 @@
     outline-offset: 5px;
 }
 
+p.editable > * {
+    pointer-events: none;
+}
+
 .outline {
     outline: 3px darkorange dashed;
 }
