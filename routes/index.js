@@ -8,7 +8,10 @@ import {
     retrieveProjectElements,
     getProjectPage,
     getElementForm,
-    saveElement
+    saveElement,
+    getElementFromPageView,
+    saveElementFromPageView,
+    getElementsFromPageView
 } from '../controllers/pagesController.js';
 
 const router = express.Router();
@@ -20,9 +23,19 @@ router.post('/', checkAuthentication, postHomePage);
 
 router.get('/login', checkNotAuthentication, loginPage);
 
-router.get('/select-project', checkAuthentication, retrieveProjectElements, getHomePage);
+router.get(
+    '/select-project',
+    checkAuthentication,
+    retrieveProjectElements,
+    getHomePage
+);
 
-router.post('/select-project', checkAuthentication, retrieveProjectElements, getHomePage);
+router.post(
+    '/select-project',
+    checkAuthentication,
+    retrieveProjectElements,
+    getHomePage,
+);
 
 // Specific page of the project
 router.get('/projects/:slug/:page', checkAuthentication, getProjectPage);
@@ -30,6 +43,25 @@ router.get('/projects/:slug/:page', checkAuthentication, getProjectPage);
 router.get('/element/:elementType/:id', checkAuthentication, getElementForm);
 
 router.post('/element/:elementType/:id', checkAuthentication, saveElement);
+
+// Routes from the page view
+router.get(
+    '/api/elements/:projectSlug/:pageName/:elementType',
+    checkAuthentication,
+    getElementsFromPageView
+);
+
+router.get(
+    '/api/element/:projectSlug/:pageName/:elementType/:elementName',
+    checkAuthentication,
+    getElementFromPageView
+);
+
+router.put(
+    '/api/element/:elementType/:id',
+    checkAuthentication,
+    saveElementFromPageView
+);
 
 router.post(
     '/login',

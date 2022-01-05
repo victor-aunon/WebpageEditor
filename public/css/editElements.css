@@ -1,0 +1,205 @@
+.editable {
+    cursor: pointer;
+    outline-offset: 5px;
+}
+
+.outline {
+    outline: 3px darkorange dashed;
+}
+
+.lwe-edit-form-container {
+    font-family: Arial, Helvetica, sans-serif;
+    display: none;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.95); /* Black w/ opacity */
+}
+
+.lwe-container-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+}
+
+.lwe-edit-form-modal {
+    background-color: #FFFFFF;
+    position: absolute;
+    width: 80%;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+}
+
+@media screen and (min-width:768px) {
+    .lwe-edit-form-modal {
+        width: 50%;
+    }
+}
+
+.lwe-close-form {
+    position: relative;
+    top: 5%;
+    margin-left: 96%;
+    background-color: #ff4d4d;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    color: #FFFFFF;
+    font-weight: 600;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+.lwe-close-form:hover {
+    background-color: darkred;
+    border: 1px solid #ff4d4d;
+}
+
+.lwe-edit-form {
+    display: none;
+}
+
+.lwe-edit-form-active {
+    display: block;
+}
+
+.lwe-edit-form h2 {
+    margin-top: 0;
+}
+
+.lwe-form-element {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.lwe-form-element label {
+    margin-bottom: 0.3rem;
+}
+
+.lwe-form-element input[type="text"] {
+    height: 1.5rem;
+    font-size: 1rem;
+}
+
+.lwe-form-element textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.lwe-save-button {
+    background-color: #b3e0ff;
+    font-size: 1.2rem;
+    width: 60%;
+    margin: 0 auto;
+    height: 2rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 0 0.5rem;
+    transition: all 0.1s linear;
+}
+
+.lwe-save-button:hover {
+    background-color: #2b5797;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.lwe-note {
+    font-style: italic;
+    color: #2b5797;
+}
+
+.lwe-form-width-height {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.lwe-video-options .lwe-form-element,
+.lwe-options-content .lwe-form-element {
+    flex-direction: row-reverse;
+    justify-content: left;
+}
+
+.lwe-video-options .lwe-form-element label {
+    margin-left: 0.8rem;
+}
+
+.lwe-video-options input[type="checkbox"],
+.lwe-options-content input[type="checkbox"] {
+    margin-top: 0;
+}
+
+@media screen and (min-width:768px) {
+    .lwe-video-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .lwe-video-options .lwe-form-element {
+        flex: 1 1 50%;
+    }
+}
+
+/* ============ OPTIONS FLOATING MENÚ ============ */
+.lwe-options {
+    position: fixed;
+    box-sizing: border-box;
+    top: 3%;
+    right: 2%;
+    width: 250px;
+    padding: 0 1rem;
+    height: 2rem;
+    background-color: #b3e0ff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    border: 2px solid #2b5797;
+}
+
+.lwe-active, .lwe-options:hover {
+    background-color: #4db8ff;
+}
+
+.lwe-options-content {
+    position: fixed;
+    display: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    top: 3%;
+    right: 2%;
+    width: 250px;
+    font-family: Helvetica, sans-serif;
+    font-size: 1rem;
+    background-color: #b3e1ffa9;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.lwe-options-content label {
+    margin-left: 0.3rem;
+    margin-top: 0.1rem;
+}
+
+.lwe-options-content button {
+    width: 100%;
+    padding: .5rem;
+    font-size: 0.9rem;
+    background-color: #FFFFFF;
+    border: 1px solid #2b5797;
+}
+
+.lwe-options-content button:hover {
+    background-color: #b3e0ff;
+}
+
+.lwe-options-content button:active {
+    background-color: #2b5797;
+    color: #FFFFFF;
+}
+/* ============ END OF OPTIONS FLOATING MENÚ ============ */

@@ -1,10 +1,15 @@
 import slugify from 'slugify';
 import path from 'path';
 import express from 'express';
+import { Op } from 'sequelize';
 
 // Models
 import Project from '../models/Project.js';
 import Page from '../models/Page.js';
+import Meta from '../models/Metatag.js';
+import Text from '../models/Text.js';
+import Image from '../models/Image.js';
+import Video from '../models/Video.js';
 
 import { app } from '../server.js';
 
@@ -198,6 +203,107 @@ const saveElement = async (req, res) => {
     res.redirect('/select-project?from=edit-element');
 };
 
+const getElementFromPageView = async (req, res) => {
+    try {
+        const { projectSlug, pageName, elementType, elementName } = req.params;
+        const project = await Project.findOne({
+            where: { slug: projectSlug },
+        });
+
+        const page = await Page.findOne({
+            where: { name: pageName, projectId: project.id },
+        });
+
+        let element;
+        switch (elementType) {
+            case 'title':
+                element = await Meta.findOne({
+                    where: { name: elementName, pageId: page.id },
+                });
+                break;
+            case 'metatag':
+                element = await Meta.findOne({
+                    where: { name: elementName, pageId: page.id },
+                });
+                break;
+            case 'text':
+                element = await Text.findOne({
+                    where: { name: elementName, pageId: page.id },
+                });
+                break;
+            case 'image':
+                element = await Image.findOne({
+                    where: { name: elementName, pageId: page.id },
+                });
+                break;
+            case 'video':
+                element = await Video.findOne({
+                    where: { name: elementName, pageId: page.id },
+                });
+                break;
+
+            default:
+                break;
+        }
+        res.status(200).json(element);
+    } catch (error) {
+        res.status(404).json({ error: error.toString()})
+    }
+};
+
+const getElementsFromPageView = async (req, res) => {
+    try {
+        const { projectSlug, pageName, elementType } = req.params;
+        const project = await Project.findOne({
+            where: { slug: projectSlug },
+        });
+
+        const page = await Page.findOne({
+            where: { name: pageName, projectId: project.id },
+        });
+
+        let elements;
+        switch (elementType) {
+            case 'title':
+                elements = await Meta.findAll({
+                    where: { pageId: page.id, name: 'title' },
+                });
+                break;
+            case 'metatag':
+                elements = await Meta.findAll({
+                    where: { pageId: page.id, name: { [Op.ne]: 'title'} },
+                });
+                break;
+            case 'text':
+                elements = await Text.findAll({
+                    where: { pageId: page.id },
+                });
+                break;
+            case 'image':
+                elements = await Image.findAll({
+                    where: { pageId: page.id },
+                });
+                break;
+            case 'video':
+                elements = await Video.findAll({
+                    where: { pageId: page.id },
+                });
+                break;
+
+            default:
+                break;
+        }
+        res.status(200).json(elements);
+    } catch (error) {
+        res.status(404).json({ error: error.toString()})
+    }
+}
+
+const saveElementFromPageView = async (req, res) => {
+    const message = await saveElementToDB(req);
+    res.send(message)
+}
+
 export {
     getHomePage,
     postHomePage,
@@ -206,4 +312,7 @@ export {
     getProjectPage,
     getElementForm,
     saveElement,
+    getElementFromPageView,
+    saveElementFromPageView,
+    getElementsFromPageView
 };

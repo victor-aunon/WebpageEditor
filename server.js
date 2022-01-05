@@ -63,6 +63,7 @@ app.use(fileUpload({
 
 // Add body parser
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Enable routing
 app.use('/', router);
