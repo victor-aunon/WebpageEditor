@@ -189,6 +189,8 @@ async function saveElementData(editForm, element) {
                     break;
             }
 
+            // Show spinner
+            showSpinner(editForm)
             // Send the element object to the api
             const URL = `/api/element/${element.type}/${response.id}`;
             const res = await fetch(URL, {
@@ -199,6 +201,9 @@ async function saveElementData(editForm, element) {
                 body,
             });
             const message = await res.json();
+
+            // Hide spinner
+            hideSpinner(editForm)
             console.log(message);
             if (message.error) {
                 alert(message.error);

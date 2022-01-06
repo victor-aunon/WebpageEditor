@@ -58,7 +58,7 @@ app.use(fileUpload({
     useTempFiles : true,
     tempFileDir : './tmp/',
     preserveExtension: true,
-    debug: true
+    debug: false
 }))
 
 // Add body parser

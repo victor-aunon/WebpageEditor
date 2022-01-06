@@ -237,8 +237,6 @@ const saveVideo = async data => {
     const newControls = Boolean(data.body['element-controls']) || false;
     const newLoop = Boolean(data.body['element-loop']) || false;
     const newMuted = Boolean(data.body['element-muted']) || false;
-    console.log(data.body);
-    console.log(video.autoplay);
 
     let response;
     try {

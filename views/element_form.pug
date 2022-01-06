@@ -82,9 +82,11 @@ block content
                 p.note Deseleccionar "Mostrar controles de reproducción" para poder hacer editable el vídeo en ciertos navegadores.
                 script.
                     checkboxDefaultChecked()
+            .spinner-container 
+            script(src="/js/spinner.js") 
             .form-element.form-submit
                 input#page-id(type="hidden", name="page-id" value=`${element.pageId}`)
-                input(type="submit", value="Guardar cambios")
+                input#form-submit(type="submit", value="Guardar cambios")
 
             
  

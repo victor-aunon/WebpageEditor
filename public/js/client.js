@@ -2,6 +2,17 @@ const projectsInput = document.querySelector('#project-input');
 
 const projectsDatalist = document.querySelector('#projects');
 
+document.addEventListener('DOMContentLoaded', () => {
+    const formSubmitButton = document.querySelector('#form-submit');
+
+    if (formSubmitButton) {
+        formSubmitButton.addEventListener('click', () => {
+            const form = document.querySelector('.edit-element');
+            showSpinner(form);
+        });
+    }
+})
+
 if (projectsInput) {
     projectsInput.onfocus = () => (projectsDatalist.style.display = 'block');
     projectsInput.onblur = () => (projectsDatalist.style.display = 'none');
@@ -24,7 +35,7 @@ function openTab(event, tab) {
     event.currentTarget.classList.add('active');
 }
 
-function openDefaultTab( defaultTab ) {
+function openDefaultTab(defaultTab) {
     let defTab;
     if (defaultTab) {
         defTab = document.querySelector(`#${defaultTab}-button`);
@@ -42,8 +53,8 @@ function checkboxDefaultChecked() {
         document.querySelector('#element-autoplay'),
         document.querySelector('#element-controls'),
         document.querySelector('#element-loop'),
-        document.querySelector('#element-muted')
-    ]
+        document.querySelector('#element-muted'),
+    ];
 
     options.forEach(option => {
         if (option.dataset.value === 'true') option.checked = true;
