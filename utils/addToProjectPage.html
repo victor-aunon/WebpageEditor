@@ -1,12 +1,16 @@
 <link rel="stylesheet" href="/css/editElements.css">
-<script src="/js/editElements.js"></script>
+<link rel="stylesheet" href="/css/spinner.css">
 <script src="/js/ckeditor/ckeditor.js"></script>
+
+<script src="/js/editElements.js"></script>
+<script src="/js/spinner.js"></script>
 
 <div class="lwe-edit-form-container">
     <div class="lwe-edit-form-modal">
         <button class="lwe-close-form" id="lwe-close-edit-form">
             X
         </button>
+        <input type="hidden" name="element-id" id="element-id">
 
         <!-- Edit title form -->
         <form id="lwe-edit-title-form" class="lwe-edit-form">
@@ -15,6 +19,7 @@
                 <label for="title-value">Nombre</label>
                 <input type="text" name="title-value" id="title-value" required="">
             </div>
+            <div class="spinner-container"></div>
             <div class="lwe-form-element">
                 <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
             </div>
@@ -31,6 +36,7 @@
                 <label for="metatag-value">Valor</label>
                 <input type="text" name="metatag-value" id="metatag-value" required="">
             </div>
+            <div class="spinner-container"></div>
             <div class="lwe-form-element">
                 <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
             </div>
@@ -46,10 +52,8 @@
             <div class="lwe-form-element">
                 <label for="text-content">Contenido</label>
                 <textarea name="text-content" id="text-content" rows="10"></textarea>
-                <script>
-                    CKEDITOR.replace('text-content');
-                </script>
             </div>
+            <div class="spinner-container"></div>
             <div class="lwe-form-element">
                 <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
             </div>
@@ -80,8 +84,8 @@
                     <label for="image-height">Alto en píxeles (opcional)</label>
                     <input type="number" name="image-height" id="image-height" min="0">
                 </div>
-
             </div>
+            <div class="spinner-container"></div>
             <div class="lwe-form-element">
                 <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
             </div>
@@ -130,6 +134,7 @@
                 </div>
             </div>
             <p class="lwe-note">Deseleccionar "Mostrar controles de reproducción" para poder hacer editable el vídeo en ciertos navegadores.</p>
+            <div class="spinner-container"></div>
             <div class="lwe-form-element">
                 <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
             </div>

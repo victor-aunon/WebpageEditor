@@ -18,6 +18,14 @@ const TYPES_OBJ = {
     VIDEO: 'video',
 };
 
+const editForms = [
+    editTitleForm,
+    editMetatagForm,
+    editTextForm,
+    editImageForm,
+    editVideoForm,
+];
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
     const editableElements = document.querySelectorAll('.editable');
@@ -62,13 +70,106 @@ document.addEventListener('DOMContentLoaded', async () => {
         metaBtnDiv.appendChild(metaBtn);
         optionsContent.appendChild(metaBtnDiv);
     }
+
+    // Add submit event listener to each form
+    for (const form of editForms) {
+        form.addEventListener('submit', async event => {
+            event.preventDefault();
+
+            const elementId = document.querySelector('#element-id').value;
+            let elementType;
+            let formInputs;
+
+            // Build the element object according to the element type
+            let body = new FormData();
+            switch (form) {
+                case editTitleForm:
+                    elementType = 'title';
+                    formInputs = getInputSelectors('title');
+                    body.append('element-value', formInputs[0].value);
+                    break;
+
+                case editMetatagForm:
+                    elementType = 'metatag';
+                    formInputs = getInputSelectors('metatag');
+                    body.append('element-name', formInputs[0].value);
+                    body.append('element-value', formInputs[1].value);
+                    break;
+
+                case editTextForm:
+                    elementType = 'text';
+                    formInputs = getInputSelectors('text');
+                    body.append('element-name', formInputs[0].value);
+                    // Instead of getting the value of the textarea, the value
+                    // of the ckeditor instance must be taken
+                    body.append(
+                        'element-content',
+                        CKEDITOR.instances['text-content'].getData()
+                    );
+                    break;
+
+                case editImageForm:
+                    elementType = 'image';
+                    formInputs = getInputSelectors('image');
+                    body.append('element-name', formInputs[0].value);
+                    body.append('element-alt', formInputs[1].value);
+                    body.append('element-width', formInputs[2].value);
+                    body.append('element-height', formInputs[3].value);
+                    body.append('element-upload', formInputs[4].files[0]);
+                    break;
+
+                case editVideoForm:
+                    elementType = 'video';
+                    formInputs = getInputSelectors('video');
+                    body.append('element-name', formInputs[0].value);
+                    body.append('element-width', formInputs[1].value);
+                    body.append('element-height', formInputs[2].value);
+                    if (formInputs[3].checked)
+                        body.append('element-autoplay', 1);
+                    if (formInputs[4].checked)
+                        body.append('element-controls', 1);
+                    if (formInputs[5].checked) body.append('element-loop', 1);
+                    if (formInputs[6].checked) body.append('element-muted', 1);
+                    body.append('element-upload', formInputs[7].files[0]);
+                default:
+                    break;
+            }
+
+            // Show spinner
+            showSpinner(form);
+            // Send the element object to the api
+            const URL = `/api/element/${elementType}/${elementId}`;
+            const res = await fetch(URL, {
+                method: 'PUT',
+                // If I want to send an object then I have to include
+                // headers: { Content-Type: 'application/json' }
+                // But I should omit headers when sending a FormData body
+                body,
+            });
+            const message = await res.json();
+
+            // Hide spinner
+            hideSpinner(form);
+            console.log(message);
+            if (message.error) {
+                alert(message.error);
+                closeEditFormBtn.click();
+            } else {
+                location.reload();
+            }
+        });
+    }
 });
 
 // Hide edit forms once the close button is clicked
 closeEditFormBtn.addEventListener('click', () => {
     formContainer.classList.remove('lwe-container-active');
     editTitleForm.classList.remove('lwe-edit-form-active');
+    editMetatagForm.classList.remove('lwe-edit-form-active');
     editTextForm.classList.remove('lwe-edit-form-active');
+    if (CKEDITOR.instances['text-content']) {
+        CKEDITOR.instances['text-content'].destroy();
+    }
     editImageForm.classList.remove('lwe-edit-form-active');
     editVideoForm.classList.remove('lwe-edit-form-active');
 });
@@ -147,122 +248,137 @@ async function saveElementData(editForm, element) {
         closeEditFormBtn.click();
         alert(response.error);
     } else {
-        const formInputs = getInputSelectors(element.type, response);
+        setInputSelectors(element.type, response);
 
-        // On form submit PUT the input values
-        editForm.addEventListener('submit', async event => {
-            event.preventDefault();
-
-            // Build the element object according to the element type
-            let body = new FormData();
-            switch (element.type) {
-                case 'title':
-                    body.append('element-value', formInputs[0].value);
-                    break;
-                case 'metatag':
-                    body.append('element-name', formInputs[0].value);
-                    body.append('element-value', formInputs[1].value);
-                    break;
-                case 'text':
-                    body.append('element-name', formInputs[0].value);
-                    body.append('element-content', formInputs[1].value);
-                    break;
-                case 'image':
-                    body.append('element-name', formInputs[0].value);
-                    body.append('element-alt', formInputs[1].value);
-                    body.append('element-width', formInputs[2].value);
-                    body.append('element-height', formInputs[3].value);
-                    body.append('element-upload', formInputs[4].files[0]);
-                    break;
-                case 'video':
-                    body.append('element-name', formInputs[0].value);
-                    body.append('element-width', formInputs[1].value);
-                    body.append('element-height', formInputs[2].value);
-                    if (formInputs[3].checked)
-                        body.append('element-autoplay', 1);
-                    if (formInputs[4].checked)
-                        body.append('element-controls', 1);
-                    if (formInputs[5].checked) body.append('element-loop', 1);
-                    if (formInputs[6].checked) body.append('element-muted', 1);
-                    body.append('element-upload', formInputs[7].files[0]);
-                default:
-                    break;
+        // Since the edit text form could be opened multiple times without
+        // reloading the page, the ckeditor textarea must be updated every time
+        // the form is opened. The previous ckeditor instance must be destroyed
+        // because it is replacing a textarea with a constant id
+        if (element.type === 'text') {
+            if (CKEDITOR.instances['text-content']) {
+                CKEDITOR.instances['text-content'].destroy();
             }
-
-            // Show spinner
-            showSpinner(editForm)
-            // Send the element object to the api
-            const URL = `/api/element/${element.type}/${response.id}`;
-            const res = await fetch(URL, {
-                method: 'PUT',
-                // If I want to send an object then I have to include
-                // headers: { Content-Type: 'application/json' }
-                // But I should omit headers when sending a FormData body
-                body,
-            });
-            const message = await res.json();
-
-            // Hide spinner
-            hideSpinner(editForm)
-            console.log(message);
-            if (message.error) {
-                alert(message.error);
-                closeEditFormBtn.click();
-            } else {
-                location.reload();
-            }
-        });
+            CKEDITOR.replace('text-content');
+        }
     }
 }
 
-function getInputSelectors(elementType, elementData) {
+function getInputSelectors(elementType) {
     let selectors = [];
     switch (elementType) {
         case 'title':
             const titleValueInput = document.querySelector('#title-value');
-            titleValueInput.value = elementData.value;
             selectors.push(titleValueInput);
             break;
 
         case 'metatag':
             const metatagNameInput = document.querySelector('#metatag-name');
-            metatagNameInput.value = elementData.name;
             selectors.push(metatagNameInput);
 
             const metatagValueInput = document.querySelector('#metatag-value');
-            metatagValueInput.value = elementData.value;
             selectors.push(metatagValueInput);
             break;
 
         case 'text':
             const textNameInput = document.querySelector('#text-name');
-            textNameInput.value = elementData.name;
             selectors.push(textNameInput);
 
             const textContentInput = document.querySelector('#text-content');
-            textContentInput.value = elementData.content;
             selectors.push(textContentInput);
             break;
 
         case 'image':
             const imageNameInput = document.querySelector('#image-name');
-            imageNameInput.value = elementData.name;
             selectors.push(imageNameInput);
 
             const imageAltInput = document.querySelector('#image-alt');
-            imageAltInput.value = elementData.alt;
             selectors.push(imageAltInput);
 
             const imageWidthInput = document.querySelector('#image-width');
-            imageWidthInput.value = elementData.width;
             selectors.push(imageWidthInput);
 
             const imageHeightInput = document.querySelector('#image-height');
-            imageHeightInput.value = elementData.height;
             selectors.push(imageHeightInput);
 
             const imageUploadInput = document.querySelector('#image-upload');
             selectors.push(imageUploadInput);
+            break;
+
+        case 'video':
+            const videoNameInput = document.querySelector('#video-name');
+            selectors.push(videoNameInput);
+
+            const videoWidthInput = document.querySelector('#video-width');
+            selectors.push(videoWidthInput);
+
+            const videoHeightInput = document.querySelector('#video-height');
+            selectors.push(videoHeightInput);
+
+            const videoAutoplayInput =
+                document.querySelector('#video-autoplay');
+            selectors.push(videoAutoplayInput);
+
+            const videoControlsInput =
+                document.querySelector('#video-controls');
+            selectors.push(videoControlsInput);
+
+            const videoLoopInput = document.querySelector('#video-loop');
+            selectors.push(videoLoopInput);
+
+            const videoMutedInput = document.querySelector('#video-muted');
+            selectors.push(videoMutedInput);
+
+            const videoUploadInput = document.querySelector('#video-upload');
+            selectors.push(videoUploadInput);
+            break;
+
+        default:
+            break;
+    }
+    return selectors;
+}
+
+function setInputSelectors(elementType, elementData) {
+    const elementIdInput = document.querySelector('#element-id');
+    elementIdInput.value = elementData.id;
+
+    switch (elementType) {
+        case 'title':
+            const titleValueInput = document.querySelector('#title-value');
+            titleValueInput.value = elementData.value;
+            break;
+
+        case 'metatag':
+            const metatagNameInput = document.querySelector('#metatag-name');
+            metatagNameInput.value = elementData.name;
+
+            const metatagValueInput = document.querySelector('#metatag-value');
+            metatagValueInput.value = elementData.value;
+            break;
+
+        case 'text':
+            const textNameInput = document.querySelector('#text-name');
+            textNameInput.value = elementData.name;
+
+            const textContentInput = document.querySelector('#text-content');
+            const pContainer = document.createElement('p');
+            pContainer.innerHTML = elementData.content;
+            pContainer.style = elementData.style;
+            textContentInput.value = pContainer.outerHTML;
+            break;
+
+        case 'image':
+            const imageNameInput = document.querySelector('#image-name');
+            imageNameInput.value = elementData.name;
+
+            const imageAltInput = document.querySelector('#image-alt');
+            imageAltInput.value = elementData.alt;
+
+            const imageWidthInput = document.querySelector('#image-width');
+            imageWidthInput.value = elementData.width;
+
+            const imageHeightInput = document.querySelector('#image-height');
+            imageHeightInput.value = elementData.height;
 
             const imageUploadLabel = document.querySelector(
                 '#image-upload-label'
@@ -273,15 +389,12 @@ function getInputSelectors(elementType, elementData) {
         case 'video':
             const videoNameInput = document.querySelector('#video-name');
             videoNameInput.value = elementData.name;
-            selectors.push(videoNameInput);
 
             const videoWidthInput = document.querySelector('#video-width');
             videoWidthInput.value = elementData.width;
-            selectors.push(videoWidthInput);
 
             const videoHeightInput = document.querySelector('#video-height');
             videoHeightInput.value = elementData.height;
-            selectors.push(videoHeightInput);
 
             const videoAutoplayInput =
                 document.querySelector('#video-autoplay');
@@ -290,7 +403,6 @@ function getInputSelectors(elementType, elementData) {
             } else {
                 videoAutoplayInput.checked = false;
             }
-            selectors.push(videoAutoplayInput);
 
             const videoControlsInput =
                 document.querySelector('#video-controls');
@@ -299,7 +411,6 @@ function getInputSelectors(elementType, elementData) {
             } else {
                 videoControlsInput.checked = false;
             }
-            selectors.push(videoControlsInput);
 
             const videoLoopInput = document.querySelector('#video-loop');
             if (elementData.loop) {
@@ -307,7 +418,6 @@ function getInputSelectors(elementType, elementData) {
             } else {
                 videoLoopInput.checked = false;
             }
-            selectors.push(videoLoopInput);
 
             const videoMutedInput = document.querySelector('#video-muted');
             if (elementData.muted) {
@@ -315,10 +425,6 @@ function getInputSelectors(elementType, elementData) {
             } else {
                 videoMutedInput.checked = false;
             }
-            selectors.push(videoMutedInput);
-
-            const videoUploadInput = document.querySelector('#video-upload');
-            selectors.push(videoUploadInput);
 
             const videoUploadLabel = document.querySelector(
                 '#video-upload-label'
@@ -329,5 +435,4 @@ function getInputSelectors(elementType, elementData) {
         default:
             break;
     }
-    return selectors;
 }
