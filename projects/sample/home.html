@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="editable">Inicio</title>
+    <meta name="description" class="editable" content="A description of my site ">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/editElements.css">
+    <link rel="stylesheet" href="/css/spinner.css">
+    <script src="/js/ckeditor/ckeditor.js"></script>
+</head>
+<body>
+    <!-- PAGE CONTENT -->
+    <nav class="navbar">
+        <h1><p id="navbar-header" class="editable">Mi magnífico sitio de ejemplo</p></h1>
+    </nav>
+    <div class="container">
+        <section class="section">
+            <p id="text-1" class="editable">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur facere vel adipisci reiciendis in dicta dolore possimus voluptate quod dolores? Rem id cupiditate provident unde vel beatae earum obcaecati ipsum?
+            Repudiandae facere sapiente exercitationem quis quae eum voluptatem! Ut quaerat quia numquam id aliquid excepturi hic. Magni dolores qui delectus neque, eaque, id eos beatae perferendis ipsam, a at alias.
+            Cum fugit obcaecati, repudiandae corrupti quod autem debitis odit quaerat doloremque. Id aspernatur amet veniam, doloribus magnam corporis maiores expedita quas error sed tempora asperiores? Laudantium mollitia rem molestiae reprehenderit.
+            Laboriosam pariatur, dolorum similique ipsam atque culpa tempore inventore animi. Ratione tempora accusamus nesciunt libero dolorem, tempore vel necessitatibus sequi aliquid nisi reprehenderit maiores commodi distinctio sit doloribus illum id?</p>
+            <p id="text-2" class="editable">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia praesentium cupiditate esse et, fugiat tempora, officiis quaerat quam aliquam nobis quas porro libero iusto dolore? Quaerat distinctio fuga rerum temporibus?
+            Culpa, laborum explicabo assumenda quaerat eaque cupiditate vero debitis dolore iusto. Magnam accusantium nulla praesentium iusto itaque ex. Veritatis fugiat veniam magnam nostrum aperiam saepe ipsa maiores officia officiis eos.</p>
+            <p id="text-3" class="editable">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores doloremque laudantium earum aut vel dolores nesciunt? Molestias exercitationem, quos quas maiores voluptatem sint atque ratione libero, cumque, eveniet quod. Sed.
+            Rem distinctio dolorem, natus debitis mollitia beatae dicta nobis maxime iure fugit dolores, voluptate reiciendis corrupti ab nulla a reprehenderit ipsam eligendi sit iusto voluptatem. Ex illum est repellendus ipsam!
+            Aut ut nihil veritatis dolorem atque officia eos facere sapiente quia praesentium cumque, ipsa dicta, quod sed sint cum itaque repellat quos necessitatibus facilis, blanditiis officiis? Vero dolorum molestiae assumenda!</p>
+        </section>
+        <section class="section">
+            <img id="image-1" src="" alt="Aquí va una imagen" class="editable" width="300" height="500">
+            <p id="text-4" class="editable">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit numquam, iste ipsa quasi odit suscipit quas obcaecati dolores doloribus ut? Voluptatum repudiandae nisi neque doloribus modi delectus inventore accusantium facere!</p>
+        </section>
+    </div>
+    <!-- END OF PAGE CONTENT -->
+
+    <div class="lwe-edit-form-container">
+        <div class="lwe-edit-form-modal">
+            <button class="lwe-close-form" id="lwe-close-edit-form">
+                X
+            </button>
+            <input type="hidden" name="element-id" id="element-id">
+
+            <!-- Edit title form -->
+            <form id="lwe-edit-title-form" class="lwe-edit-form">
+                <h2>Editar título de la página</h2>
+                <div class="lwe-form-element">
+                    <label for="title-value">Nombre</label>
+                    <input type="text" name="title-value" id="title-value" required="">
+                </div>
+                <div class="spinner-container"></div>
+                <div class="lwe-form-element">
+                    <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
+                </div>
+            </form> <!-- End of Edit title form -->
+
+            <!-- Edit metatag form -->
+            <form id="lwe-edit-metatag-form" class="lwe-edit-form">
+                <h2>Editar metatag</h2>
+                <div class="lwe-form-element">
+                    <label for="metatag-name">Nombre</label>
+                    <input type="text" name="metatag-name" id="metatag-name" required="">
+                </div>
+                <div class="lwe-form-element">
+                    <label for="metatag-value">Valor</label>
+                    <input type="text" name="metatag-value" id="metatag-value" required="">
+                </div>
+                <div class="spinner-container"></div>
+                <div class="lwe-form-element">
+                    <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
+                </div>
+            </form> <!-- End of Edit metatag form -->
+
+            <!-- Edit text form -->
+            <form id="lwe-edit-text-form" class="lwe-edit-form">
+                <h2>Editar texto</h2>
+                <div class="lwe-form-element">
+                    <label for="text-name">Nombre</label>
+                    <input type="text" name="text-name" id="text-name" required="">
+                </div>
+                <div class="lwe-form-element">
+                    <label for="text-content">Contenido</label>
+                    <textarea name="text-content" id="text-content" rows="10"></textarea>
+                </div>
+                <div class="spinner-container"></div>
+                <div class="lwe-form-element">
+                    <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
+                </div>
+            </form> <!-- End of Edit text form -->
+
+            <!-- Edit image form -->
+            <form id="lwe-edit-image-form" class="lwe-edit-form" enctype="multipart/form-data">
+                <h2>Editar imagen</h2>
+                <div class="lwe-form-element">
+                    <label for="image-name">Nombre</label>
+                    <input type="text" name="image-name" id="image-name" required="">
+                </div>
+                <div class="lwe-form-element">
+                    <label for="image-alt">Texto alternativo (SEO)</label>
+                    <input type="text" name="image-alt" id="image-alt" required="">
+                </div>
+                <div class="lwe-form-element">
+                    <label id="image-upload-label" for="image-upload">Subir archivo</label>
+                    <input type="file" name="image-upload" id="image-upload" accept="image/*">
+                    <p class="lwe-note">Recuerda renombrar los archivos antes de subirlos con un nombre identificativo y fácil</p>
+                </div>
+                <div class="lwe-form-element lwe-form-width-height">
+                    <div class="lwe-form-element">
+                        <label for="image-width">Ancho en píxeles (opcional)</label>
+                        <input type="number" name="image-width" id="image-width" min="0">
+                    </div>
+                    <div class="lwe-form-element">
+                        <label for="image-height">Alto en píxeles (opcional)</label>
+                        <input type="number" name="image-height" id="image-height" min="0">
+                    </div>
+                </div>
+                <div class="spinner-container"></div>
+                <div class="lwe-form-element">
+                    <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
+                </div>
+            </form> <!-- End of Edit image form -->
+
+            <!-- Edit video form -->
+            <form id="lwe-edit-video-form" class="lwe-edit-form" enctype="multipart/form-data">
+                <h2>Editar video</h2>
+                <div class="lwe-form-element">
+                    <label for="video-name">Nombre</label>
+                    <input type="text" name="video-name" id="video-name" required="">
+                </div>
+                <div class="lwe-form-element">
+                    <label id="video-upload-label" for="video-upload">Subir archivo</label>
+                    <input type="file" name="video-upload" id="video-upload" accept="video/*">
+                    <p class="lwe-note">Recuerda renombrar los archivos antes de subirlos con un nombre identificativo y fácil</p>
+                </div>
+                <div class="lwe-form-element lwe-form-width-height">
+                    <div class="lwe-form-element">
+                        <label for="video-width">Ancho en píxeles (opcional)</label>
+                        <input type="number" name="video-width" id="video-width" min="0">
+                    </div>
+                    <div class="lwe-form-element">
+                        <label for="video-height">Alto en píxeles (opcional)</label>
+                        <input type="number" name="video-height" id="video-height" min="0">
+                    </div>
+
+                </div>
+                <h4>Opciones de vídeo</h4>
+                <div class="lwe-video-options">
+                    <div class="lwe-form-element">
+                        <label for="video-autoplay">Reproducir automáticamente</label>
+                        <input type="checkbox" name="video-autoplay" id="video-autoplay" data-value="true" value="1">
+                    </div>
+                    <div class="lwe-form-element">
+                        <label for="video-controls">Mostrar controles de reproducción</label>
+                        <input type="checkbox" name="video-controls" id="video-controls" data-value="false" value="1">
+                    </div>
+                    <div class="lwe-form-element">
+                        <label for="video-loop">Reproducir en bucle</label>
+                        <input type="checkbox" name="video-loop" id="video-loop" data-value="false" value="1">
+                    </div>
+                    <div class="lwe-form-element">
+                        <label for="video-muted">Reproducir sin audio</label>
+                        <input type="checkbox" name="video-muted" id="video-muted" data-value="false" value="1">
+                    </div>
+                </div>
+                <p class="lwe-note">Deseleccionar "Mostrar controles de reproducción" para poder hacer editable el vídeo en ciertos navegadores.</p>
+                <div class="spinner-container"></div>
+                <div class="lwe-form-element">
+                    <input class="lwe-save-button" id="text-save-changes" type="submit" value="Guardar">
+                </div>
+            </form> <!-- End of Edit video form -->
+        </div>
+    </div><!-- End of edit form container-->
+
+    <!-- Floating options menu -->
+    <button type="button" id="lwe-options-button" class="lwe-options"> Mostrar opciones </button>
+    <div class="lwe-options-content" id="lwe-options-container">
+        <div class="lwe-form-element">
+            <label for="hide-lines">Ocultar delimitadores de elementos editables</label>
+            <input type="checkbox" name="hide-lines" id="lwe-hide-lines" value="1">
+        </div>
+        <div class="lwe-form-element">
+            <button id="lwe-edit-title" class="lwe-edit-metatag">Editar título</button>
+        </div>
+    </div>
+
+    <script src="/js/editElements.js"></script>
+    <script src="/js/spinner.js"></script>
+</body></html>

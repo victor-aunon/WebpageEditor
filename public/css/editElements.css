@@ -3,6 +3,14 @@
     outline-offset: 5px;
 }
 
+h1 p.editable,
+h2 p.editable,
+h3 p.editable,
+h4 p.editable,
+h5 p.editable {
+    margin: 0;
+}
+
 p.editable > * {
     pointer-events: none;
 }

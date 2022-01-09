@@ -1,7 +1,8 @@
 # Folders
 .history
 node_modules
-projects
+projects/*
+!projects/sample
 tmp
 
 # Files
