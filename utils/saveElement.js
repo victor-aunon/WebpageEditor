@@ -211,7 +211,11 @@ const saveImage = async data => {
             const currentImage = $(`#${image.name}`);
             const imageHTML = `<img id="${newName}" class=${currentImage.attr(
                 'class'
-            )} src="/img/${source}" alt="${newAlt}" width=${newWidth} height=${newHeight} >`;
+            )} src="/img/${source}" alt="${newAlt}" ${
+                newWidth === 0 ? 'width=""' : 'width="' + newWidth + '"'
+            } ${
+                newHeight === 0 ? 'height=""' : 'height="' + newHeight + '"'
+            } >`;
             $(`#${image.name}`).replaceWith(imageHTML);
             // Write the new HTML to its file
             writeFileSync(page.path, $.html());
@@ -282,7 +286,9 @@ const saveVideo = async data => {
             const currentVideo = $(`#${video.name}`);
             const videoHTML = `<video id="${newName}" class=${currentVideo.attr(
                 'class'
-            )} src="/video/${source}" width=${newWidth} height=${newHeight} ${
+            )} src="/video/${source}" ${
+                newWidth === 0 ? 'width=""' : 'width="' + newWidth + '"'
+            } ${newHeight === 0 ? 'height=""' : 'height="' + newHeight + '"'} ${
                 newAutoplay === true ? 'autoplay' : ''
             } ${newControls === true ? 'controls' : ''} ${
                 newLoop === true ? 'loop' : ''
