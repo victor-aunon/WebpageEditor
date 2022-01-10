@@ -11,7 +11,7 @@ const Text = db.define(
             allowNull: false,
         },
         content: {
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
             allowNull: false,
         },
         style: {
