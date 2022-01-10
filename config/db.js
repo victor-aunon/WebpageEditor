@@ -12,8 +12,8 @@ const env = process.env.NODE_ENV || 'development';
 
 // Initialize the database
 const db = new Sequelize(
-    config[env].name,
-    config[env].user,
+    config[env].database,
+    config[env].username,
     config[env].password,
     {
         host: config[env].host,
