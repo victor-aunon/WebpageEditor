@@ -141,6 +141,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const URL = `/api/element/${elementType}/${elementId}`;
             const res = await fetch(URL, {
                 method: 'PUT',
+                mode: 'cors',
+                credentials: 'include',
                 // If I want to send an object then I have to include
                 // headers: { Content-Type: 'application/json' }
                 // But I should omit headers when sending a FormData body

@@ -7,7 +7,8 @@ if (process.env.NODE_ENV !== 'production') {
 const serverConfig = {
     host: process.env.HOST || '0.0.0.0',
     port: process.env.PORT || 3000,
-    secret: process.env.SECRET
+    secret: process.env.SECRET,
+    url: process.env.URL
 }
 
 export default serverConfig;

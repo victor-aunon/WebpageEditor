@@ -3,6 +3,7 @@ import passport from 'passport';
 import flash from 'express-flash';
 import session from 'express-session';
 import fileUpload from 'express-fileupload';
+import cors from 'cors';
 
 // Configs
 import db from './config/db.js';
@@ -21,6 +22,12 @@ initializePassport(
 );
 
 const app = express();
+
+app.use(cors({
+    origin: serverConfig.url,
+    methods: 'GET,PUT,POST,DELETE',
+    credentials: true
+}));
 
 // Connect with the database
 // db.authenticate()
