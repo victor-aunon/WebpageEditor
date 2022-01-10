@@ -129,8 +129,7 @@ p.editable > * {
 }
 
 .lwe-form-width-height {
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
 .lwe-video-options .lwe-form-element,
@@ -149,6 +148,10 @@ p.editable > * {
 }
 
 @media screen and (min-width:768px) {
+    .lwe-form-width-height {
+        flex-direction: row;
+        justify-content: space-between;
+    }
     .lwe-video-options {
         display: flex;
         flex-direction: row;
