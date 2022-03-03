@@ -22,6 +22,11 @@ const Video = db.define(
             type: Sequelize.INTEGER,
             allowNull: true,
         },
+        classlist: {
+            type: Sequelize.TEXT,
+            allowNull: false,
+            defaultValue: '',
+        },
         autoplay: {
             type: Sequelize.BOOLEAN,
             defaultValue: true,
@@ -49,9 +54,9 @@ const Video = db.define(
     }
 );
 
-Page.hasMany(Video);
+Page.hasMany(Video, { onDelete: 'cascade' });
 Video.belongsTo(Page);
-User.hasMany(Video, {foreignKey: 'editorId'});
+User.hasMany(Video, {foreignKey: 'editorId', onDelete: 'cascade'});
 Video.belongsTo(User, {as: 'Editor', foreignKey: 'editorId'})
 
 export default Video;

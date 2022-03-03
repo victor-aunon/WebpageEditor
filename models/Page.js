@@ -24,7 +24,7 @@ const Page = db.define(
     }
 );
 
-Project.hasMany(Page);
+Project.hasMany(Page, { onDelete: 'cascade' });
 Page.belongsTo(Project);
 
 export default Page;

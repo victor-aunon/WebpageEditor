@@ -36,7 +36,8 @@ const getHomePage = async (req, res) => {
     }
 
     // Clean global messages if the get request does not come from edit element
-    if (!req.query.from === 'edit-element') messages = undefined;
+    // if (!req.query.from === 'edit-element') messages = undefined;
+    console.log(req.messages)
 
     res.render('home', {
         page: 'Home',
@@ -47,7 +48,7 @@ const getHomePage = async (req, res) => {
         projects: projects,
         project: req.project,
         errors: req.errors,
-        messages,
+        messages: req.messages,
         projectElements: req.elements,
         pageName: page != undefined ? page.name : undefined,
     });
@@ -55,6 +56,7 @@ const getHomePage = async (req, res) => {
 
 const postHomePage = async (req, res) => {
     const user = await req.user;
+    console.log(user.id);
 
     const errors = [];
 
@@ -152,14 +154,37 @@ const retrieveProjectElements = async (req, res, next) => {
         if (error.errors) {
             req.errors = [{ message: error.errors[0].message }];
         } else {
-            req.errors = [
-                { message: 'No existen páginas para este proyecto.' },
-            ];
+            req.errors = [{ message: 'No existen páginas para este proyecto' }];
         }
     }
     // Using next because this function add properties to the request,
     // does not respond anything
     return next();
+};
+
+const deleteProject = async (req, res, next) => {
+    const project = await Project.findOne({
+        where: { name: req.params.projectName },
+    });
+
+    if (!project) {
+        req.errors = [
+            { message: `El proyecto ${req.params.projectName} no existe` },
+        ];
+        return next();
+    }
+
+    // Destroy pages
+    Project.destroy({ where: { id: project.id } }).then(DBresponse => {
+        req.messages = {
+            success: `El proyecto ${project.name} fue borrado con éxito`,
+        };
+        return next();
+    }).catch(DBerror => {
+        req.errors = [
+            { message: DBerror.errors[0].message },
+        ];
+    });
 };
 
 const getProjectPage = async (req, res) => {
@@ -247,7 +272,7 @@ const getElementFromPageView = async (req, res) => {
         }
         res.status(200).json(element);
     } catch (error) {
-        res.status(404).json({ error: error.toString()})
+        res.status(404).json({ error: error.toString() });
     }
 };
 
@@ -271,7 +296,7 @@ const getElementsFromPageView = async (req, res) => {
                 break;
             case 'metatag':
                 elements = await Meta.findAll({
-                    where: { pageId: page.id, name: { [Op.ne]: 'title'} },
+                    where: { pageId: page.id, name: { [Op.ne]: 'title' } },
                 });
                 break;
             case 'text':
@@ -295,24 +320,25 @@ const getElementsFromPageView = async (req, res) => {
         }
         res.status(200).json(elements);
     } catch (error) {
-        res.status(404).json({ error: error.toString()})
+        res.status(404).json({ error: error.toString() });
     }
-}
+};
 
 const saveElementFromPageView = async (req, res) => {
     const message = await saveElementToDB(req);
-    res.send(message)
-}
+    res.send(message);
+};
 
 export {
     getHomePage,
     postHomePage,
     loginPage,
     retrieveProjectElements,
+    deleteProject,
     getProjectPage,
     getElementForm,
     saveElement,
     getElementFromPageView,
     saveElementFromPageView,
-    getElementsFromPageView
+    getElementsFromPageView,
 };

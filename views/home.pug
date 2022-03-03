@@ -4,10 +4,19 @@ include ./layout/mixins
 block content
     if user.admin
         include ./layout/project_create
+        include ./layout/project_delete
 
     include ./layout/errors
     include ./layout/project_select
 
+    if messages 
+        section.container
+            if messages.error 
+                p.message.alert #{messages.error}
+            else if messages.success
+                p.message.success #{messages.success}
+            else if messages.info 
+                p.message.info #{messages.info}
     if projectElements
         section.container
             .tab
@@ -25,13 +34,6 @@ block content
                                 <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" />
                                 </svg>
                                 | Ver página
-                    if messages 
-                        if messages.error 
-                            p.message.alert #{messages.error}
-                        else if messages.success
-                            p.message.success #{messages.success}
-                        else if messages.info 
-                            p.message.info #{messages.info}
                     .title-container
                         h2 Título
                         +tableElements([page.elements.title[0]], page)

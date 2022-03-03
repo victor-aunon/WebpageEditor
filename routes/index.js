@@ -6,12 +6,13 @@ import {
     postHomePage,
     loginPage,
     retrieveProjectElements,
+    deleteProject,
     getProjectPage,
     getElementForm,
     saveElement,
     getElementFromPageView,
     saveElementFromPageView,
-    getElementsFromPageView
+    getElementsFromPageView,
 } from '../controllers/pagesController.js';
 
 const router = express.Router();
@@ -34,7 +35,14 @@ router.post(
     '/select-project',
     checkAuthentication,
     retrieveProjectElements,
-    getHomePage,
+    getHomePage
+);
+
+router.post(
+    '/delete-project/:projectName',
+    checkAuthentication,
+    deleteProject,
+    getHomePage
 );
 
 // Specific page of the project
@@ -63,6 +71,7 @@ router.put(
     saveElementFromPageView
 );
 
+// Login routes
 router.post(
     '/login',
     checkNotAuthentication,

@@ -28,6 +28,6 @@ const Project = db.define(
 
 
 User.hasMany(Project, {foreignKey: 'authorId'})
-Project.belongsTo(User, {as: 'Author', foreignKey: 'authorId'})
+Project.belongsTo(User, {as: 'Author', foreignKey: 'authorId', onDelete: 'cascade'})
 
 export default Project;

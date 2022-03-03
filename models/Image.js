@@ -26,6 +26,11 @@ const Image = db.define(
             type: Sequelize.INTEGER,
             allowNull: true,
         },
+        classlist: {
+            type: Sequelize.TEXT,
+            allowNull: false,
+            defaultValue: '',
+        },
         editions: {
             type: Sequelize.SMALLINT,
             defaultValue: 0,
@@ -37,9 +42,9 @@ const Image = db.define(
     }
 );
 
-Page.hasMany(Image);
+Page.hasMany(Image, { onDelete: 'cascade' });
 Image.belongsTo(Page);
-User.hasMany(Image, {foreignKey: 'editorId'});
+User.hasMany(Image, {foreignKey: 'editorId', onDelete: 'cascade'});
 Image.belongsTo(User, {as: 'Editor', foreignKey: 'editorId'})
 
 export default Image;

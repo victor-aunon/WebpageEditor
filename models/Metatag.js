@@ -25,9 +25,9 @@ const Meta = db.define(
     }
 );
 
-Page.hasMany(Meta);
+Page.hasMany(Meta, { onDelete: 'cascade' });
 Meta.belongsTo(Page);
-User.hasMany(Meta, {foreignKey: 'editorId'});
+User.hasMany(Meta, {foreignKey: 'editorId', onDelete: 'cascade'});
 Meta.belongsTo(User, {as: 'Editor', foreignKey: 'editorId'})
 
 export default Meta;

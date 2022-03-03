@@ -18,6 +18,11 @@ const Text = db.define(
             type: Sequelize.STRING,
             allowNull: true,
         },
+        classlist: {
+            type: Sequelize.TEXT,
+            allowNull: false,
+            defaultValue: '',
+        },
         editions: {
             type: Sequelize.SMALLINT,
             defaultValue: 0,
@@ -29,9 +34,9 @@ const Text = db.define(
     }
 );
 
-Page.hasMany(Text);
+Page.hasMany(Text, { onDelete: 'cascade' });
 Text.belongsTo(Page);
-User.hasMany(Text, {foreignKey: 'editorId'});
+User.hasMany(Text, {foreignKey: 'editorId', onDelete: 'cascade'});
 Text.belongsTo(User, {as: 'Editor', foreignKey: 'editorId'})
 
 export default Text;
