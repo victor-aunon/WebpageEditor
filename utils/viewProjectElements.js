@@ -47,7 +47,9 @@ async function getElementPropsByType(currentUserId, pageId, elements, type) {
                         pageId,
                         Metatag,
                         meta,
-                        meta.attribs.name,
+                        meta.attribs.name !== undefined
+                            ? meta.attribs.name
+                            : meta.attribs.property,
                         ELEMENT_TYPES[type].name
                     )
                 );
@@ -176,7 +178,10 @@ async function addElementToDB(element, editorId, pageId) {
 
             case 'meta':
                 await Metatag.create({
-                    name: element.attribs.name,
+                    name:
+                        element.attribs.name !== undefined
+                            ? element.attribs.name
+                            : element.attribs.property,
                     value: element.attribs.content,
                     editorId,
                     pageId,
@@ -192,7 +197,7 @@ async function addElementToDB(element, editorId, pageId) {
                     pageId,
                 });
                 break;
-
+            // TODO
             case 'img':
                 await Image.create({
                     name: element.attribs.id,

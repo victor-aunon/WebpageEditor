@@ -8,7 +8,6 @@ import Metatag from '../models/Metatag.js';
 import Text from '../models/Text.js';
 import Image from '../models/Image.js';
 import Video from '../models/Video.js';
-import Meta from '../models/Metatag.js';
 import Page from '../models/Page.js';
 
 // Functions
@@ -100,8 +99,15 @@ const saveMetatag = async data => {
             const pageHTML = getPageContent(page.path);
             const $ = cheerio.load(pageHTML);
             // New element to replace the old one
-            const metaHTML = `<meta name="${newName}" class="editable" content="${newValue}">`;
-            $(`meta[name="${metatag.name}"]`).replaceWith(metaHTML);
+            // Distinguish between og metas and normal metas
+            let metaHTML = '';
+            if (newName.includes('og:')) { // TODO: allow more types
+                metaHTML = `<meta property="${newName}" class="editable" content="${newValue}">`;
+                $(`meta[property="${metatag.name}"]`).replaceWith(metaHTML);
+            } else {
+                metaHTML = `<meta name="${newName}" class="editable" content="${newValue}">`;
+                $(`meta[name="${metatag.name}"]`).replaceWith(metaHTML);
+            }
             // Write the new HTML to its file
             writeFileSync(page.path, $.html());
 
